@@ -9,9 +9,9 @@ if [[ -o interactive ]]; then
   fi
 
   # -- ¯\_(ツ)_/¯
+  fastfetch
   # pokego --name charmeleon --no-title # charizard - jigglypuff - eevee - delcatty - charmeleon - 
   # pokego -r 6,1,5,8,2,7 -no-title -s # 1,3,5,7
-  # fastfetch
 fi
 
 # # -- Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.; everything else may go below.
@@ -19,14 +19,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
 #[ Custom completions]
-fpath+=~/.zfunc
+if type brew &>/dev/null; then
+  FPATH+=~/.zfunc
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-autoload -Uz compinit
-compinit -C        # fast, safe if you trust your plugins
-# _comp_options+=(globdots)
-
+  autoload -Uz compinit
+  compinit -C        # fast, safe if you trust your plugins
+  # _comp_options+=(globdots)
+fi
 
 # ============
 #   ZINIT
@@ -52,21 +53,12 @@ autoload -Uz _zinit
 #[Powerlevel10k]
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# -- Starship
-# zinit ice as"command" from"gh-r" \
-#   atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-#   atpull"%atclone" src"init.zsh"
-# zinit light starship/starship
-
 # -- ZVM/zsh-vi-mode
-zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
-
-# -- Syntax-highlighting]
-zinit light zdharma-continuum/fast-syntax-highlighting
+# zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
 
 # -- zsh plugins
 zinit light zsh-users/zsh-completions
-# zinit light zsh-users/zsh-syntax-highlighting 
+zinit light zsh-users/zsh-syntax-highlighting 
 
 # -- zsh-autosuggestions
 zinit light zsh-users/zsh-autosuggestions
